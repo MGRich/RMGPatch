@@ -1,7 +1,7 @@
 # Dependencies
 The folders listed here are trimmed-down and slighly edited versions of what they're labeled as. that's all
 # Licences
-LZMA is in the public domain.
+LZMA is in the public domain, credited to Igor Pavlov.
 ## ZLib
 ```
   zlib.h -- interface of the 'zlib' general purpose compression library
