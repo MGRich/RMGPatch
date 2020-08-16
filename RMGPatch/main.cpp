@@ -23,12 +23,6 @@ static int chsize = 0x800;
 #endif
 static int lensize = 0x200;
 
-#ifdef _WIN32
-const char delim = '\\';
-#else
-const char delim = '/';
-#endif
-
 static int bytecount[3] = {0, 0, 0};
 static bool include[3] = {1, 1, 1};
 
@@ -52,7 +46,7 @@ void showhelp() {
         "    --crccmp         - compare files with CRC-32 to check if they are the same instead of attempting to make" << endl <<
         "        a patch to see if they're the same. this is slower and more memory intensive. defaults to n" << endl <<
         "    --include(a/r/d) - includea, includer, included; a for additions, r for removals, and d for changed files" << endl <<
-        "        this can be used for both creation and applying patches. all default to y" << endl;
+        "        this can be used for both creation and applying directory patches. all default to y" << endl;
 }
 
 charvec createpatch(std::ifstream ogfile, std::ifstream edfile, bool header, uint crc = 0);
@@ -259,7 +253,7 @@ int main(int argc, char* argv[]) {
             writeint(dirhead, dwritten->children.size(), 2);
             while (Dir* x = itr->next()) {
                 cout << x->path() << endl;
-                dirhead.push_back(x->name.size() | (0x80 * !x->isdir));
+                dirhead.push_back((Byte)x->name.size() | (0x80 * !x->isdir));
                 dirhead.insert(dirhead.end(), x->name.begin(), x->name.end());
                 if (!x->isdir) {
                     char typ = 0;
